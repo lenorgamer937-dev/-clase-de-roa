@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Grupo 4 · Lenguajes de programación en el mundo actual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F3FF; --card:#FFFFFF; --text:#15112E; --muted:#514B70;
+  --line:#15112E; --sh:#15112E; --code:#15112E; --focus:#6B4EFF; --navbg:rgba(246,243,255,.94);
+  --ink:#15112E; --y:#FFD84D; --c:#FFD84D;
+  --disp:"Unbounded","Arial Black",system-ui,sans-serif;
+  --sans:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#100C24; --card:#1D1840; --text:#F6F3FF; --muted:#B4AED4;
+    --line:#E4DEFF; --sh:#000000; --code:#0A0718; --focus:#FFD84D; --navbg:rgba(16,12,36,.94);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#100C24; --card:#1D1840; --text:#F6F3FF; --muted:#B4AED4;
+  --line:#E4DEFF; --sh:#000000; --code:#0A0718; --focus:#FFD84D; --navbg:rgba(16,12,36,.94);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.6;overflow-x:hidden}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--disp);margin:0}
+p{margin:0}
+
+/* barra superior */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--navbg);border-bottom:3px solid var(--line);backdrop-filter:blur(8px)}
+.nav-in{display:flex;align-items:center;gap:16px;height:60px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:800;font-size:.95rem;color:var(--text);text-decoration:none}
+.logo i{font-style:normal;background:var(--y);color:var(--ink);border:3px solid var(--line);border-radius:9px;padding:1px 8px}
+.links{display:flex;gap:4px;margin-left:auto}
+.links a{padding:8px 14px;border-radius:99px;font-weight:700;font-size:.92rem;color:var(--text);text-decoration:none}
+.links a:hover{background:var(--y);color:var(--ink)}
+.theme{width:42px;height:42px;border-radius:50%;border:3px solid var(--line);background:var(--card);cursor:pointer;font-size:1.1rem;line-height:1;padding:0}
+@media (max-width:640px){.links{display:none}.theme{margin-left:auto}}
+
+/* botones */
+.btn{display:inline-block;font-weight:700;padding:12px 22px;border-radius:99px;border:3px solid var(--line);background:var(--y);color:var(--ink);box-shadow:4px 4px 0 var(--sh);cursor:pointer;text-decoration:none;transition:transform .12s,box-shadow .12s}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:6px 6px 0 var(--sh)}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--sh)}
+.btn.ghost{background:var(--card);color:var(--text)}
+
+/* hero */
+.hero{padding:44px 0 64px}
+.hero-grid{display:grid;gap:44px;align-items:center}
+@media (min-width:940px){.hero-grid{grid-template-columns:1.1fr .9fr}}
+.sticker{display:inline-block;background:#FF6B6B;color:var(--ink);border:3px solid var(--line);border-radius:10px;padding:4px 14px;font-family:var(--disp);font-weight:800;font-size:.85rem;transform:rotate(-3deg);box-shadow:3px 3px 0 var(--sh)}
+h1{font-weight:800;font-size:clamp(1.85rem,5.2vw,3.5rem);line-height:1.1;letter-spacing:-.02em;margin:22px 0 18px}
+.sub{max-width:52ch;color:var(--muted);font-size:1.12rem}
+.cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
+.win{border:3px solid var(--line);border-radius:14px;box-shadow:9px 9px 0 var(--c);overflow:hidden;background:var(--code);color:#F6F3FF;transition:box-shadow .3s}
+.win-bar{display:flex;align-items:center;gap:8px;padding:11px 14px;background:var(--c);color:var(--ink);border-bottom:3px solid var(--line);transition:background .3s}
+.win-bar span{width:12px;height:12px;border:2.5px solid var(--ink);border-radius:3px}
+.win-bar b{margin-left:auto;font-family:var(--disp);font-size:.85rem;font-weight:700}
+.win-body{margin:0;padding:24px 20px 10px;min-height:88px;font-family:var(--mono);font-size:clamp(.88rem,2.7vw,1.1rem);white-space:pre-wrap;word-break:break-word}
+.pr{color:#8f88bd;margin-right:.6ch}
+.caret{display:inline-block;width:.6ch;height:1.15em;background:#F6F3FF;vertical-align:-.2em;margin-left:2px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.win-out{font-family:var(--mono);font-size:.95rem;padding:6px 20px 22px;color:#6EE7A0;min-height:2.6em}
+.win-cap{margin-top:16px;color:var(--muted);font-size:.95rem}
+
+/* secciones */
+.sec{padding:68px 0}
+.sec h2{font-size:clamp(1.5rem,4.2vw,2.3rem);line-height:1.15;letter-spacing:-.015em}
+.lead{margin-top:12px;max-width:60ch;color:var(--muted);font-size:1.05rem}
+.head{margin-bottom:30px}
+
+/* metodología */
+.qgrid{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.q{border:3px solid var(--line);border-radius:18px;box-shadow:6px 6px 0 var(--sh);padding:22px;background:var(--c);color:var(--ink)}
+.q h3{font-size:1.02rem;line-height:1.25;margin-bottom:10px}
+.q p{font-weight:500;font-size:.98rem}
+
+/* filtro */
+.filter{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+.chip{font-family:var(--mono);font-weight:600;font-size:.86rem;padding:7px 15px;border-radius:99px;border:3px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
+.chip:hover{background:var(--y);color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--y);color:var(--ink);box-shadow:3px 3px 0 var(--sh)}
+.status{min-height:1.7em;margin-bottom:26px;color:var(--muted)}
+.status b{color:var(--text)}
+
+/* tarjetas de áreas */
+.grid{display:grid;gap:24px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.card{display:flex;flex-direction:column;gap:8px;min-height:216px;text-align:left;padding:18px;cursor:pointer;color:var(--ink);background:var(--c);border:3px solid var(--line);border-radius:18px;box-shadow:6px 6px 0 var(--sh);transition:transform .12s,box-shadow .12s,opacity .2s}
+.card:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--sh)}
+.card:active{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--sh)}
+.card .ico{font-size:2.1rem;line-height:1}
+.card h3{font-size:1.05rem;line-height:1.2;margin-top:6px}
+.card p{font-weight:500;font-size:.95rem}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:10px}
+.tag{font-family:var(--mono);font-size:.76rem;font-weight:600;padding:2px 9px;border-radius:99px;border:2px solid var(--ink);background:rgba(255,255,255,.6);color:var(--ink)}
+.tag.on{background:var(--ink);color:#fff}
+.card.dim{opacity:.28;box-shadow:none;transform:none}
+
+/* mapa */
+.mwrap{overflow-x:auto;border:3px solid var(--line);border-radius:18px;box-shadow:6px 6px 0 var(--sh);background:var(--card)}
+.matrix{border-collapse:collapse;width:100%;min-width:600px}
+.matrix th,.matrix td{padding:10px 8px;text-align:center;border-bottom:2px solid var(--line)}
+.matrix tbody tr:last-child>*{border-bottom:0}
+.matrix th[scope="row"]{position:sticky;left:0;background:var(--card);text-align:left;padding-left:14px;z-index:1}
+.matrix button{background:none;border:0;cursor:pointer;padding:4px 6px;border-radius:8px}
+.matrix thead button{font-size:1.4rem;line-height:1}
+.matrix tbody th button{font-family:var(--mono);font-weight:700;font-size:.92rem}
+.matrix button:hover{background:var(--y);color:var(--ink)}
+.mdot{display:inline-block;width:18px;height:18px;border-radius:50%;background:var(--c);border:2.5px solid var(--line)}
+.matrix .tot{font-family:var(--mono);font-weight:700;color:var(--muted)}
+.note{margin-top:14px;color:var(--muted);font-size:.95rem}
+
+/* equipo */
+.team{display:grid;gap:24px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.member{border:3px solid var(--line);border-radius:18px;background:var(--card);box-shadow:6px 6px 0 var(--sh);padding:20px}
+.avatar{width:56px;height:56px;border-radius:50%;border:3px solid var(--line);background:var(--c);color:var(--ink);display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:1.2rem;margin-bottom:14px}
+.member h3{font-size:1rem;margin-bottom:4px}
+.member small{display:block;color:var(--muted);margin-bottom:12px}
+.mareas{display:flex;flex-wrap:wrap;gap:8px}
+.mareas button{display:inline-flex;align-items:center;gap:6px;background:var(--c);color:var(--ink);border:2.5px solid var(--line);border-radius:99px;padding:4px 12px;font-weight:700;font-size:.88rem;cursor:pointer}
+.mareas button:hover{transform:translateY(-2px)}
+
+/* quiz */
+.quiz{max-width:760px;border:3px solid var(--line);border-radius:18px;box-shadow:8px 8px 0 var(--sh);background:var(--card);padding:26px}
+.steps{display:flex;gap:6px;margin-bottom:22px}
+.steps i{flex:1;height:12px;border:2.5px solid var(--line);border-radius:4px;background:transparent}
+.steps i.done{background:var(--y)}
+.steps i.now{background:var(--card);box-shadow:inset 0 0 0 3px var(--y)}
+.qtext{font-family:var(--disp);font-weight:700;font-size:clamp(1.05rem,3.2vw,1.35rem);line-height:1.3;margin-bottom:20px}
+.opts{display:grid;gap:12px}
+.qopt{width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:3px solid var(--line);background:var(--card);color:var(--text);cursor:pointer;font-weight:700;transition:transform .12s,background .2s}
+.qopt:hover:not(:disabled){background:var(--y);color:var(--ink);transform:translate(-1px,-1px)}
+.qopt:disabled{cursor:default}
+.qopt.ok{background:#6EE7A0;color:var(--ink)}
+.qopt.bad{background:#FF6B6B;color:var(--ink)}
+.expl{margin-top:18px;padding:14px 16px;border-radius:12px;border:3px solid var(--line);background:var(--y);color:var(--ink);font-weight:500}
+.qnext{margin-top:18px}
+.score{font-family:var(--disp);font-weight:800;font-size:clamp(2.4rem,9vw,4rem);line-height:1}
+.qend p{margin:14px 0 22px;color:var(--muted);font-size:1.05rem}
+
+/* cierre */
+.close{background:var(--code);color:#F6F3FF;border-top:3px solid var(--line);border-bottom:3px solid var(--line)}
+.close .big{font-family:var(--disp);font-weight:800;font-size:clamp(1.6rem,5vw,3rem);line-height:1.15;letter-spacing:-.02em;max-width:22ch}
+.pts{display:grid;gap:20px;margin-top:38px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.pt{border:3px solid #F6F3FF;border-radius:16px;padding:18px 20px;background:var(--c);color:var(--ink);font-weight:500}
+footer{padding:26px 0 40px;color:var(--muted);font-size:.92rem}
+
+/* ventana de detalle */
+.modal{position:fixed;inset:0;z-index:50;display:none;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+.modal.open{display:flex;align-items:flex-end;justify-content:center}
+.scrim{position:absolute;inset:0;background:rgba(10,7,24,.7)}
+.sheet{position:relative;display:flex;flex-direction:column;width:min(860px,100%);max-height:94%;background:var(--card);color:var(--text);border:3px solid var(--line);border-radius:22px 22px 0 0;box-shadow:0 -6px 0 var(--c);overflow:hidden;animation:rise .28s ease-out}
+@keyframes rise{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+@media (min-width:800px){.modal.open{align-items:center}.sheet{border-radius:22px;max-height:88%;box-shadow:10px 10px 0 var(--c)}}
+.s-head{display:flex;align-items:center;gap:16px;padding:18px 20px;background:var(--c);color:var(--ink);border-bottom:3px solid var(--line)}
+.s-ico{font-size:2.4rem;line-height:1}
+.s-head h2{font-size:clamp(1.15rem,3.6vw,1.6rem);line-height:1.15}
+.s-head p{font-weight:500}
+.s-close{margin-left:auto;flex:none;width:42px;height:42px;border-radius:50%;border:3px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;font-weight:800;font-size:1rem}
+.s-body{overflow:auto;padding:22px 22px 8px;flex:1}
+.s-body h3{font-size:.98rem;margin:26px 0 12px}
+.s-body>p:first-child{max-width:62ch}
+.langs{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.langs li{display:grid;gap:6px 14px;grid-template-columns:auto 1fr;align-items:start}
+@media (max-width:560px){.langs li{grid-template-columns:1fr}}
+.lname{justify-self:start;font-family:var(--mono);font-size:.86rem;font-weight:700;padding:3px 12px;border-radius:99px;background:var(--c);color:var(--ink);border:2.5px solid var(--line)}
+.exs{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.ex{border:3px solid var(--line);border-radius:14px;padding:14px 16px}
+.ex-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:6px}
+.ex .tag{background:var(--c);border-color:var(--line)}
+.ex p{font-size:.95rem;color:var(--muted)}
+.fact{margin-top:24px;padding:14px 16px;border:3px solid var(--line);border-radius:14px;background:var(--y);color:var(--ink);box-shadow:4px 4px 0 var(--sh)}
+.fact b{font-family:var(--disp);font-size:.85rem}
+.fact p{margin-top:4px;font-weight:500}
+.who{margin:20px 0 14px;color:var(--muted)}
+.who b{color:var(--text)}
+.s-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;border-top:3px solid var(--line);background:var(--card)}
+.s-foot span{font-family:var(--mono);font-weight:700;color:var(--muted)}
+.s-foot .btn{padding:9px 18px}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div id="page">
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="logo" href="#top"><i>G4</i><span>Lenguajes</span></a>
+      <nav class="links" aria-label="Secciones">
+        <a href="#areas">Áreas</a><a href="#mapa">Mapa</a><a href="#equipo">Equipo</a><a href="#quiz">Quiz</a>
+      </nav>
+      <button class="theme" id="theme" aria-label="Cambiar entre tema claro y oscuro">🌙</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="sticker">Grupo 4</span>
+          <h1>Aplicaciones de los lenguajes de programación en el mundo actual</h1>
+          <p class="sub">Un mismo mensaje se puede escribir de muchas formas. Recorremos 10 áreas de la tecnología para ver qué lenguajes se usan, por qué, y en qué apps y empresas reales.</p>
+          <div class="cta">
+            <a class="btn" href="#areas">Explorar las 10 áreas</a>
+            <a class="btn ghost" href="#quiz">Ir al quiz</a>
+          </div>
+        </div>
+        <div>
+          <div class="win" id="win" style="--c:#FFD84D">
+            <div class="win-bar"><span></span><span></span><span></span><b id="winLang">Python</b></div>
+            <pre class="win-body" aria-live="off"><code><span class="pr">&gt;</span><span id="typed"></span><span class="caret"></span></code></pre>
+            <div class="win-out" id="winOut"></div>
+          </div>
+          <p class="win-cap">Mismo resultado en cada lenguaje. Entonces, ¿por qué existen tantos?</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="metodo">
+      <div class="wrap">
+        <div class="head">
+          <h2>Cómo armamos este trabajo</h2>
+        </div>
+        <div class="qgrid">
+          <div class="q" style="--c:#FFD84D"><h3>¿Qué investigamos?</h3><p>El uso de los lenguajes de programación en 10 áreas tecnológicas, con ejemplos de lenguajes en cada una y por qué se utilizan.</p></div>
+          <div class="q" style="--c:#4DD8F0"><h3>¿Cómo lo investigamos?</h3><p>Elegimos las áreas, buscamos qué lenguajes se usan hoy y analizamos ejemplos reales de aplicaciones y empresas.</p></div>
+          <div class="q" style="--c:#FF7EB6"><h3>¿Por qué?</h3><p>Porque cada lenguaje tiene características propias, y elegirlo depende, entre otros factores, del tipo de aplicación que se quiere desarrollar.</p></div>
+          <div class="q" style="--c:#6EE7A0"><h3>¿Cómo lo exponemos?</h3><p>Con ejemplos reales, mostrando la relación entre cada lenguaje y las áreas del desarrollo tecnológico. Esta página es el apoyo.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="areas">
+      <div class="wrap">
+        <div class="head">
+          <h2>Las 10 áreas tecnológicas</h2>
+          <p class="lead">Toca una tarjeta para ver los lenguajes, ejemplos reales y por qué se usan. También puedes filtrar por lenguaje y ver en qué áreas aparece.</p>
+        </div>
+        <div class="filter" id="filter" role="group" aria-label="Filtrar por lenguaje"></div>
+        <p class="status" id="status" aria-live="polite"></p>
+        <div class="grid" id="cards"></div>
+      </div>
+    </section>
+
+    <section class="sec" id="mapa">
+      <div class="wrap">
+        <div class="head">
+          <h2>¿Qué lenguaje vive dónde?</h2>
+          <p class="lead">Un mismo lenguaje puede aparecer en varias áreas. Cada punto marca dónde se usa.</p>
+        </div>
+        <div class="mwrap" id="matrix"></div>
+        <p class="note" id="mnote"></p>
+      </div>
+    </section>
+
+    <section class="sec" id="equipo">
+      <div class="wrap">
+        <div class="head">
+          <h2>Quién expone qué</h2>
+          <p class="lead">Somos 6 integrantes y cada uno presenta sus áreas.</p>
+        </div>
+        <div class="team" id="team"></div>
+      </div>
+    </section>
+
+    <section class="sec" id="quiz">
+      <div class="wrap">
+        <div class="head">
+          <h2>Ponte a prueba</h2>
+          <p class="lead">8 preguntas sobre lo que acabas de ver.</p>
+        </div>
+        <div class="quiz" id="quizBox"></div>
+      </div>
+    </section>
+
+    <section class="sec close" id="cierre">
+      <div class="wrap">
+        <p class="big">No existe el mejor lenguaje. Existe el adecuado para cada problema.</p>
+        <div class="pts" id="pts"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">Grupo 4 · Aplicaciones de los lenguajes de programación en el mundo actual</div>
+  </footer>
+</div>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="scrim" id="scrim"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="s-head">
+      <div class="s-ico" id="mIco"></div>
+      <div><h2 id="mTitle"></h2><p id="mTag"></p></div>
+      <button class="s-close" id="mClose" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="s-body" id="mBody"></div>
+    <div class="s-foot">
+      <button class="btn ghost" id="mPrev">‹ Anterior</button>
+      <span id="mCount"></span>
+      <button class="btn ghost" id="mNext">Siguiente ›</button>
+    </div>
+  </div>
+</div>
+
+<noscript><p style="padding:20px">Esta página necesita JavaScript para funcionar.</p></noscript>
+
+<script>
+(function(){
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s)};
+var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* =====================================================
+   CONTENIDO — aquí se edita todo el texto de la página
+   ===================================================== */
+var AREAS=[
+ {id:"web",icon:"🌐",c:"#4DD8F0",title:"Desarrollo web",tag:"Todo lo que abres en el navegador",
+  intro:"Páginas, tiendas en línea y redes sociales. Aquí se combinan lenguajes que corren en tu pantalla (frontend) con otros que trabajan en el servidor (backend).",
+  langs:[
+   {n:"JavaScript",why:"Es el lenguaje que los navegadores ejecutan de forma nativa, así que da vida a cualquier página interactiva."},
+   {n:"TypeScript",why:"Es JavaScript con tipos: detecta errores antes de publicar, ideal para proyectos grandes."},
+   {n:"PHP",why:"Muy usado en el servidor. WordPress, uno de los gestores de sitios más usados, está hecho con PHP."},
+   {n:"Python",why:"Con Django o Flask permite armar un backend rápido y con poco código."},
+   {n:"Java",why:"Frameworks como Spring sostienen backends grandes que necesitan ser estables."}],
+  ejemplos:[
+   {who:"Facebook (Meta)",lang:"JavaScript",what:"Creó React, la librería con la que se arma su interfaz y la de miles de sitios más."},
+   {who:"Instagram",lang:"Python",what:"Su backend web está construido sobre Django, un framework de Python."},
+   {who:"Wikipedia",lang:"PHP",what:"Funciona con MediaWiki, un software escrito en PHP."},
+   {who:"Netflix",lang:"JavaScript",what:"Usa React en su web y Node.js en parte de sus servicios."}],
+  dato:"Casi todas las páginas que visitas hoy ejecutan JavaScript dentro de tu navegador."},
+
+ {id:"moviles",icon:"📱",c:"#B79CFF",title:"Aplicaciones móviles",tag:"Apps en tu bolsillo",
+  intro:"Una app puede ser nativa (hecha para un solo sistema, con mejor rendimiento) o multiplataforma (un solo código para Android e iOS).",
+  langs:[
+   {n:"Kotlin",why:"Google lo declaró su lenguaje preferido para Android en 2019. Es más corto y seguro que Java."},
+   {n:"Java",why:"Es el lenguaje histórico de Android y todavía hay muchísimo código escrito en él."},
+   {n:"Swift",why:"Es el lenguaje de Apple para iPhone y iPad: rápido y pensado para evitar errores."},
+   {n:"Dart",why:"Es el lenguaje de Flutter, que permite un solo código para Android e iOS."},
+   {n:"JavaScript",why:"Con React Native se crean apps móviles usando JavaScript."}],
+  ejemplos:[
+   {who:"Google Pay",lang:"Dart",what:"Fue rediseñada con Flutter para mantener una sola base de código en Android e iOS."},
+   {who:"My BMW",lang:"Dart",what:"La app oficial de BMW está hecha con Flutter."},
+   {who:"Instagram",lang:"JavaScript",what:"Usa React Native en algunas partes de su aplicación."},
+   {who:"Apps nativas de iPhone",lang:"Swift",what:"Apple impulsa Swift como el lenguaje para crear apps nativas de iOS."}],
+  dato:"Con Flutter, un solo equipo puede lanzar la misma app en Android e iOS al mismo tiempo."},
+
+ {id:"juegos",icon:"🎮",c:"#FF7EB6",title:"Videojuegos",tag:"Rendimiento y creatividad",
+  intro:"Un juego tiene que dibujar muchos cuadros por segundo. Por eso se usan motores (Unity, Unreal, Roblox Studio) y lenguajes rápidos.",
+  langs:[
+   {n:"C++",why:"Es la base de Unreal Engine: da control total de la memoria y máximo rendimiento."},
+   {n:"C#",why:"Es el lenguaje de Unity: fácil de aprender y muy usado por estudios independientes."},
+   {n:"Luau",why:"Es el lenguaje de Roblox, derivado de Lua. Permite crear juegos con scripts sencillos."},
+   {n:"Java",why:"Minecraft: Java Edition está programado en Java."}],
+  ejemplos:[
+   {who:"Fortnite",lang:"C++",what:"Está hecho con Unreal Engine, que se programa en C++."},
+   {who:"Among Us",lang:"C#",what:"Fue creado con Unity, que usa C# para los scripts."},
+   {who:"Roblox",lang:"Luau",what:"Millones de creadores programan sus experiencias en Luau."},
+   {who:"Minecraft (Java Edition)",lang:"Java",what:"La versión original del juego está escrita en Java."}],
+  dato:"Roblox tiene su propio lenguaje, Luau, desarrollado a partir de Lua."},
+
+ {id:"ia",icon:"🧠",c:"#6EE7A0",title:"Inteligencia artificial",tag:"Máquinas que aprenden",
+  intro:"Entrenar un modelo requiere librerías de matemáticas y muchísimo cálculo. Python aporta la facilidad y C++ el rendimiento por debajo.",
+  langs:[
+   {n:"Python",why:"Casi todo el ecosistema de IA vive en Python: PyTorch, TensorFlow, scikit-learn."},
+   {n:"C++",why:"Las librerías de IA son rápidas porque su núcleo está escrito en C++ (y CUDA en las tarjetas gráficas)."},
+   {n:"Julia",why:"Diseñado para cálculo científico rápido, con una comunidad creciente en IA."}],
+  ejemplos:[
+   {who:"ChatGPT (OpenAI)",lang:"Python",what:"OpenAI entrena sus modelos con PyTorch, una librería de Python."},
+   {who:"Tesla Autopilot",lang:"Python",what:"Tesla ha explicado que entrena sus redes neuronales con PyTorch."},
+   {who:"Google",lang:"C++",what:"TensorFlow, creado por Google, tiene su núcleo en C++ y se usa desde Python."},
+   {who:"Netflix",lang:"Python",what:"Sus recomendaciones se apoyan en modelos de aprendizaje automático con Python."}],
+  dato:"PyTorch, una de las librerías más usadas en investigación de IA, fue creada por Meta (Facebook)."},
+
+ {id:"datos",icon:"📊",c:"#FFD84D",title:"Ciencia de datos",tag:"Convertir datos en decisiones",
+  intro:"Limpiar, analizar y visualizar datos. Aquí importa la facilidad para manejar tablas, estadística y gráficos.",
+  langs:[
+   {n:"Python",why:"Con pandas y NumPy limpia y analiza millones de filas con pocas líneas."},
+   {n:"R",why:"Nació para la estadística: modelos y gráficos de muy buena calidad."},
+   {n:"SQL",why:"Es el idioma para pedirle datos a una base de datos."}],
+  ejemplos:[
+   {who:"BBC",lang:"R",what:"Su equipo de datos usa R (ggplot2) para hacer los gráficos de sus notas."},
+   {who:"NASA",lang:"Python",what:"Científicos de la NASA usan Python para analizar datos de sus misiones."},
+   {who:"Netflix",lang:"Python",what:"Analiza datos de uso y prueba cambios en su plataforma con herramientas de Python."},
+   {who:"Bancos y tiendas",lang:"SQL",what:"Cualquier empresa con una base de datos consulta su información con SQL."}],
+  dato:"SQL nació en los años 70 y todavía se usa todos los días en casi cualquier empresa con datos."},
+
+ {id:"empresarial",icon:"🏢",c:"#FF9F5A",title:"Sistemas empresariales",tag:"Lo que mueve a las empresas por dentro",
+  intro:"Facturación, inventarios, nómina y bancos. Se busca estabilidad, seguridad y sistemas que duren décadas.",
+  langs:[
+   {n:"Java",why:"Muy usado en banca y grandes empresas por su estabilidad y su enorme ecosistema."},
+   {n:"C#",why:"Con .NET es la opción de muchas empresas que trabajan con tecnología de Microsoft."},
+   {n:"SQL",why:"Guarda y consulta clientes, ventas e inventario."},
+   {n:"COBOL",why:"Lenguaje antiguo que todavía sostiene sistemas de bancos y gobiernos."},
+   {n:"ABAP",why:"Es el lenguaje de SAP, el ERP que usan muchas multinacionales."}],
+  ejemplos:[
+   {who:"SAP",lang:"ABAP",what:"Su sistema ERP se personaliza con ABAP."},
+   {who:"Salesforce",lang:"Apex",what:"Tiene su propio lenguaje, Apex, con una sintaxis parecida a Java."},
+   {who:"Bancos",lang:"COBOL",what:"Muchos todavía tienen el núcleo de sus operaciones escrito en COBOL."},
+   {who:"Stack Overflow",lang:"C#",what:"Corre sobre ASP.NET, es decir, sobre C#."}],
+  dato:"COBOL nació en 1959 y sigue funcionando en muchos sistemas financieros."},
+
+ {id:"so",icon:"💻",c:"#7FA6FF",title:"Sistemas operativos",tag:"El software que controla tu equipo",
+  intro:"Un sistema operativo administra la memoria, el procesador y los dispositivos. Necesita lenguajes que hablen casi directo con el hardware.",
+  langs:[
+   {n:"C",why:"El lenguaje clásico de los kernels: Unix y Linux se escribieron en C."},
+   {n:"C++",why:"Partes de Windows y macOS lo usan para combinar rendimiento con mejor organización del código."},
+   {n:"Rust",why:"Evita errores de memoria. Linux lo admite para partes del kernel desde la versión 6.1."},
+   {n:"Assembly",why:"Código de más bajo nivel, para el arranque y tareas muy específicas del procesador."}],
+  ejemplos:[
+   {who:"Linux",lang:"C",what:"El kernel está escrito sobre todo en C y ahora acepta Rust."},
+   {who:"Windows",lang:"C++",what:"Gran parte del sistema está escrito en C y C++."},
+   {who:"macOS",lang:"C++",what:"El núcleo usa C y C++, y las apps modernas suelen hacerse con Swift."},
+   {who:"Android",lang:"C",what:"Corre sobre el kernel de Linux (C) y sus apps se hacen en Kotlin o Java."}],
+  dato:"Linux lo creó Linus Torvalds en 1991 y hoy corre en servidores, celulares y supercomputadoras."},
+
+ {id:"auto",icon:"⚙️",c:"#C6F24E",title:"Automatización",tag:"Que la computadora haga lo repetitivo",
+  intro:"Scripts que ahorran horas: renombrar archivos, generar reportes, configurar servidores. Se busca escribir rápido y que funcione en cualquier lado.",
+  langs:[
+   {n:"Python",why:"Lee archivos, consulta páginas web y automatiza reportes con pocas líneas."},
+   {n:"Bash",why:"Son los scripts de la terminal de Linux y macOS."},
+   {n:"PowerShell",why:"Automatiza la administración de Windows y de servicios de Microsoft."},
+   {n:"JavaScript",why:"Con Google Apps Script automatiza Sheets, Gmail y Calendar."},
+   {n:"VBA",why:"Es el lenguaje de las macros de Excel."}],
+  ejemplos:[
+   {who:"Ansible",lang:"Python",what:"Herramienta hecha en Python para configurar cientos de servidores a la vez."},
+   {who:"Google Workspace",lang:"JavaScript",what:"Apps Script permite automatizar hojas de cálculo y correos."},
+   {who:"Microsoft Excel",lang:"VBA",what:"Las macros automatizan tareas repetitivas en hojas de cálculo."},
+   {who:"Servidores Linux",lang:"Bash",what:"Los scripts de Bash programan copias de seguridad y tareas de mantenimiento."}],
+  dato:"Automatizar una tarea de 1 hora a la semana te devuelve más de 50 horas al año."},
+
+ {id:"seguridad",icon:"🔒",c:"#FF6B6B",title:"Seguridad informática",tag:"Proteger y probar las defensas",
+  intro:"La ciberseguridad analiza vulnerabilidades, malware y redes. Se usan lenguajes para automatizar pruebas y otros para estudiar el software a bajo nivel. Todo con fines éticos y autorizados.",
+  langs:[
+   {n:"Python",why:"Muy usado para escribir herramientas y automatizar pruebas de seguridad."},
+   {n:"C",why:"Permite entender fallos de memoria y analizar software a bajo nivel."},
+   {n:"Ruby",why:"Metasploit, uno de los frameworks de pruebas de penetración más conocidos, está escrito en Ruby."},
+   {n:"Bash",why:"Scripts rápidos para trabajar en Kali Linux y en servidores."},
+   {n:"Java",why:"Varias herramientas de análisis web, como Burp Suite, están hechas en Java."},
+   {n:"Rust",why:"Evita errores de memoria, una de las causas más comunes de vulnerabilidades."}],
+  ejemplos:[
+   {who:"Metasploit",lang:"Ruby",what:"Framework de pruebas de penetración escrito en Ruby."},
+   {who:"Wireshark",lang:"C",what:"Analizador de tráfico de red cuyo núcleo está escrito en C."},
+   {who:"Burp Suite",lang:"Java",what:"Herramienta para auditar la seguridad de aplicaciones web, hecha en Java."},
+   {who:"Kali Linux",lang:"Python",what:"Incluye cientos de herramientas de seguridad, muchas hechas en Python."}],
+  dato:"Microsoft y Google han reportado que cerca del 70% de sus vulnerabilidades graves eran errores de memoria. Por eso se impulsa Rust."},
+
+ {id:"iot",icon:"📡",c:"#4FE0C4",title:"Internet de las cosas",tag:"Objetos que se conectan",
+  intro:"Sensores y dispositivos con poca memoria y poca batería. Se necesita código pequeño, eficiente y capaz de comunicarse por internet.",
+  langs:[
+   {n:"C++",why:"Arduino se programa en un C++ simplificado, eficiente para dispositivos pequeños."},
+   {n:"C",why:"Muy usado en el firmware de microcontroladores."},
+   {n:"Python",why:"Se usa en Raspberry Pi y, con MicroPython, en placas como ESP32 y Raspberry Pi Pico."}],
+  ejemplos:[
+   {who:"Arduino",lang:"C++",what:"Sus programas (sketches) son C++ simplificado."},
+   {who:"Raspberry Pi",lang:"Python",what:"La Raspberry Pi Foundation promueve Python para aprender a programarla."},
+   {who:"Home Assistant",lang:"Python",what:"Plataforma de casas inteligentes hecha en Python."},
+   {who:"ESP32",lang:"C++",what:"Microcontrolador con WiFi que se programa en C/C++ o MicroPython."}],
+  dato:"Un Arduino Uno tiene solo 2 KB de memoria RAM, mucho menos de lo que pesa una foto."}
+];
+
+var TEAM=[
+ {name:"Yeuri",areas:["web"]},
+ {name:"Stacy",areas:["moviles","empresarial"]},
+ {name:"Dizneydi",areas:["juegos","seguridad"]},
+ {name:"Roanny",areas:["ia","datos"]},
+ {name:"Beyonce",areas:["auto","so"]},
+ {name:"Juan Angel",areas:["iot"]}
+];
+
+var QUIZ=[
+ {q:"¿Qué lenguaje ejecutan de forma nativa todos los navegadores web?",a:"JavaScript",w:["Python","Java","PHP"],e:"Los navegadores entienden JavaScript directamente. Los demás corren en el servidor."},
+ {q:"¿Con qué lenguaje se programan los scripts de Unity?",a:"C#",w:["C++","Swift","Ruby"],e:"Unity usa C#. Unreal Engine es el que se programa en C++."},
+ {q:"¿Qué lenguaje usa Roblox para los juegos?",a:"Luau",w:["Swift","R","Go"],e:"Luau es el lenguaje de Roblox, derivado de Lua."},
+ {q:"¿Qué lenguaje domina el ecosistema de la inteligencia artificial (PyTorch, TensorFlow)?",a:"Python",w:["COBOL","PHP","Swift"],e:"Python concentra las librerías de IA, mientras C++ trabaja por debajo para dar velocidad."},
+ {q:"¿Qué lenguaje se usa para pedirle datos a una base de datos?",a:"SQL",w:["CSS","Dart","Swift"],e:"SQL sirve para consultar, filtrar y modificar datos en bases de datos."},
+ {q:"El kernel de Linux está escrito principalmente en…",a:"C",w:["Java","C#","Ruby"],e:"Está escrito sobre todo en C, y desde la versión 6.1 acepta partes en Rust."},
+ {q:"¿Qué lenguaje usa Flutter para crear apps de Android e iOS con un solo código?",a:"Dart",w:["Kotlin","Swift","Luau"],e:"Flutter usa Dart. Kotlin es para Android y Swift para iOS."},
+ {q:"Los programas (sketches) de Arduino se escriben en…",a:"C++",w:["PHP","Ruby","SQL"],e:"Arduino usa un C++ simplificado, ideal para dispositivos con poca memoria."}
+];
+
+var SNIPS=[
+ {l:"Python",c:"#FFD84D",code:'print("Hola, mundo")'},
+ {l:"JavaScript",c:"#4DD8F0",code:'console.log("Hola, mundo");'},
+ {l:"C++",c:"#FF7EB6",code:'std::cout << "Hola, mundo";'},
+ {l:"Kotlin",c:"#B79CFF",code:'println("Hola, mundo")'},
+ {l:"Java",c:"#FF9F5A",code:'System.out.println("Hola, mundo");'},
+ {l:"SQL",c:"#7FA6FF",code:"SELECT 'Hola, mundo';"},
+ {l:"Rust",c:"#FF6B6B",code:'println!("Hola, mundo");'},
+ {l:"Bash",c:"#C6F24E",code:'echo "Hola, mundo"'}
+];
+
+/* =====================================================
+   LÓGICA — no hace falta tocar de aquí para abajo
+   ===================================================== */
+var langMap={};
+AREAS.forEach(function(a,i){a.langs.forEach(function(l){(langMap[l.n]=langMap[l.n]||[]).push(i)})});
+var shared=Object.keys(langMap).filter(function(n){return langMap[n].length>=2})
+  .sort(function(a,b){return langMap[b].length-langMap[a].length||a.localeCompare(b)});
+function presenter(id){return TEAM.filter(function(t){return t.areas.indexOf(id)>-1})[0]||{name:"Por definir"}}
+function areaIndex(id){for(var i=0;i<AREAS.length;i++){if(AREAS[i].id===id)return i}return 0}
+
+/* Hero: código que se escribe solo */
+(function(){
+  var typed=$("#typed"),out=$("#winOut"),win=$("#win"),wl=$("#winLang");
+  function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+  async function loop(){
+    var i=0;
+    while(true){
+      var s=SNIPS[i%SNIPS.length];
+      win.style.setProperty("--c",s.c); wl.textContent=s.l; typed.textContent=""; out.textContent="";
+      if(reduce){typed.textContent=" "+s.code; out.textContent="salida: Hola, mundo"; await sleep(2600)}
+      else{
+        typed.textContent=" ";
+        for(var k=0;k<s.code.length;k++){typed.textContent+=s.code[k]; await sleep(36+Math.random()*44)}
+        await sleep(280); out.textContent="salida: Hola, mundo"; await sleep(1900);
+      }
+      i++;
+    }
+  }
+  loop();
+})();
+
+/* Filtro y tarjetas */
+var active=null;
+function buildFilter(){
+  var f=$("#filter");
+  f.innerHTML='<button class="chip" data-l="" aria-pressed="true">Todos</button>'+
+    shared.map(function(n){return '<button class="chip" data-l="'+n+'" aria-pressed="false">'+n+'</button>'}).join("");
+  f.addEventListener("click",function(e){var b=e.target.closest(".chip");if(!b)return;setFilter(b.dataset.l)});
+}
+function buildCards(){
+  $("#cards").innerHTML=AREAS.map(function(a,i){
+    var tags=a.langs.slice(0,3).map(function(l){return '<span class="tag" data-l="'+l.n+'">'+l.n+'</span>'}).join("");
+    return '<button class="card" data-i="'+i+'" style="--c:'+a.c+'"><span class="ico" aria-hidden="true">'+a.icon+'</span><h3>'+a.title+'</h3><p>'+a.tag+'</p><span class="tags">'+tags+'</span></button>';
+  }).join("");
+  $("#cards").addEventListener("click",function(e){var b=e.target.closest(".card");if(b)openArea(+b.dataset.i)});
+}
+function setFilter(n){
+  active=(!n||n===active)?null:n;
+  document.querySelectorAll(".chip").forEach(function(c){
+    var on=(c.dataset.l===""&&!active)||(c.dataset.l===active);c.setAttribute("aria-pressed",on?"true":"false");
+  });
+  var hits=active?langMap[active]:[];
+  document.querySelectorAll(".card").forEach(function(c){
+    var i=+c.dataset.i,hit=active&&hits.indexOf(i)>-1;
+    c.classList.toggle("dim",!!active&&!hit);
+    c.querySelectorAll(".tag").forEach(function(t){t.classList.toggle("on",!!active&&t.dataset.l===active)});
+  });
+  var st=$("#status");
+  if(!active){st.innerHTML="Mostrando las "+AREAS.length+" áreas. Elige un lenguaje para ver dónde se usa."}
+  else{st.innerHTML="<b>"+active+"</b> aparece en "+hits.length+" de "+AREAS.length+" áreas: "+hits.map(function(i){return AREAS[i].title}).join(", ")+"."}
+}
+
+/* Mapa lenguaje x área */
+function buildMatrix(){
+  var h='<table class="matrix"><thead><tr><th></th>'+AREAS.map(function(a,i){
+    return '<th scope="col"><button data-open="'+i+'" title="'+a.title+'" aria-label="'+a.title+'">'+a.icon+'</button></th>'}).join("")+'<th scope="col" class="tot">Total</th></tr></thead><tbody>';
+  shared.forEach(function(n){
+    var s=langMap[n];
+    h+='<tr><th scope="row"><button data-lang="'+n+'" title="Ver en las áreas">'+n+'</button></th>'+
+      AREAS.map(function(a,i){return s.indexOf(i)>-1?'<td><span class="mdot" style="--c:'+a.c+'" title="'+a.title+'"></span></td>':'<td></td>'}).join("")+
+      '<td class="tot">'+s.length+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  $("#matrix").innerHTML=h;
+  $("#matrix").addEventListener("click",function(e){
+    var o=e.target.closest("[data-open]"),l=e.target.closest("[data-lang]");
+    if(o){openArea(+o.dataset.open)}
+    else if(l){setFilter(l.dataset.lang);$("#areas").scrollIntoView()}
+  });
+  var top=shared[0];
+  $("#mnote").textContent="Toca un ícono para abrir el área, o el nombre de un lenguaje para filtrarlo. "+top+" es el que más se repite: aparece en "+langMap[top].length+" de "+AREAS.length+" áreas.";
+}
+
+/* Equipo */
+function buildTeam(){
+  $("#team").innerHTML=TEAM.map(function(t,k){
+    var first=AREAS[areaIndex(t.areas[0])];
+    var btns=t.areas.map(function(id){var a=AREAS[areaIndex(id)];
+      return '<button style="--c:'+a.c+'" data-open="'+areaIndex(id)+'"><span aria-hidden="true">'+a.icon+'</span>'+a.title+'</button>'}).join("");
+    return '<div class="member"><div class="avatar" style="--c:'+first.c+'">'+t.name.charAt(0)+'</div><h3>'+t.name+'</h3><small>Expone '+t.areas.length+(t.areas.length===1?' área':' áreas')+'</small><div class="mareas">'+btns+'</div></div>';
+  }).join("");
+  $("#team").addEventListener("click",function(e){var b=e.target.closest("[data-open]");if(b)openArea(+b.dataset.open)});
+}
+
+/* Cierre */
+function buildClose(){
+  var py=langMap["Python"]?langMap["Python"].length:0;
+  var pts=[
+   {c:"#FFD84D",t:"Un lenguaje puede vivir en varias áreas: Python aparece en "+py+" de las "+AREAS.length+"."},
+   {c:"#4DD8F0",t:"Una app real mezcla varios lenguajes. Por ejemplo, una app móvil combina Kotlin o Swift, un backend y SQL."},
+   {c:"#FF7EB6",t:"Elegir bien depende, entre otros factores, del tipo de aplicación que se quiere desarrollar."}
+  ];
+  $("#pts").innerHTML=pts.map(function(p){return '<div class="pt" style="--c:'+p.c+'">'+p.t+'</div>'}).join("");
+}
+
+/* Ventana de detalle */
+var modal=$("#modal"),cur=0,lastFocus=null;
+function fillModal(i){
+  var a=AREAS[i],p=presenter(a.id);
+  $("#sheet").style.setProperty("--c",a.c);
+  $("#mIco").textContent=a.icon; $("#mTitle").textContent=a.title; $("#mTag").textContent=a.tag;
+  $("#mBody").innerHTML=
+    '<p>'+a.intro+'</p>'+
+    '<h3>Lenguajes y por qué se usan</h3><ul class="langs">'+a.langs.map(function(l){return '<li><b class="lname">'+l.n+'</b><span>'+l.why+'</span></li>'}).join("")+'</ul>'+
+    '<h3>Ejemplos reales</h3><div class="exs">'+a.ejemplos.map(function(e){return '<div class="ex"><div class="ex-h"><strong>'+e.who+'</strong><span class="tag">'+e.lang+'</span></div><p>'+e.what+'</p></div>'}).join("")+'</div>'+
+    '<div class="fact"><b>Dato curioso</b><p>'+a.dato+'</p></div>'+
+    '<p class="who">Expone: <b>'+p.name+'</b></p>';
+  $("#mCount").textContent=(i+1)+" de "+AREAS.length;
+  $("#mBody").scrollTop=0;
+}
+function openArea(i){
+  lastFocus=document.activeElement; cur=i; fillModal(i);
+  modal.classList.add("open"); modal.setAttribute("aria-hidden","false");
+  $("#page").inert=true; document.documentElement.style.overflow="hidden";
+  $("#mClose").focus();
+}
+function closeArea(){
+  modal.classList.remove("open"); modal.setAttribute("aria-hidden","true");
+  $("#page").inert=false; document.documentElement.style.overflow="";
+  if(lastFocus&&lastFocus.focus)lastFocus.focus();
+}
+function step(d){cur=(cur+d+AREAS.length)%AREAS.length;fillModal(cur)}
+$("#mClose").addEventListener("click",closeArea);
+$("#scrim").addEventListener("click",closeArea);
+$("#mPrev").addEventListener("click",function(){step(-1)});
+$("#mNext").addEventListener("click",function(){step(1)});
+document.addEventListener("keydown",function(e){
+  if(!modal.classList.contains("open"))return;
+  if(e.key==="Escape")closeArea();
+  else if(e.key==="ArrowLeft")step(-1);
+  else if(e.key==="ArrowRight")step(1);
+});
+
+/* Quiz */
+var qi=0,score=0;
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function stepsHtml(){var s="";for(var i=0;i<QUIZ.length;i++){s+='<i class="'+(i<qi?"done":i===qi?"now":"")+'"></i>'}return '<div class="steps" aria-hidden="true">'+s+'</div>'}
+function renderQ(){
+  var q=QUIZ[qi],opts=shuffle([q.a].concat(q.w));
+  $("#quizBox").innerHTML=stepsHtml()+
+    '<p class="qtext">'+q.q+'</p><div class="opts">'+opts.map(function(o){return '<button class="qopt" data-v="'+o+'">'+o+'</button>'}).join("")+'</div><div id="qfb" aria-live="polite"></div>';
+}
+function endQ(){
+  var msg=score>=7?"Nivel senior. Ya podrías dar la exposición tú solo.":score>=5?"Vas muy bien. Repasa las áreas que fallaste y listo.":"Vuelve a recorrer las áreas y prueba otra vez.";
+  $("#quizBox").innerHTML='<div class="qend"><div class="score">'+score+' de '+QUIZ.length+'</div><p>'+msg+'</p><button class="btn" id="qrestart">Intentar de nuevo</button></div>';
+}
+$("#quizBox").addEventListener("click",function(e){
+  var o=e.target.closest(".qopt"),r=e.target.closest("#qrestart"),n=e.target.closest("#qnext");
+  if(r){qi=0;score=0;renderQ();return}
+  if(n){qi++;if(qi>=QUIZ.length)endQ();else renderQ();return}
+  if(!o||o.disabled)return;
+  var q=QUIZ[qi],good=o.dataset.v===q.a;
+  if(good)score++;
+  document.querySelectorAll(".qopt").forEach(function(b){
+    b.disabled=true;
+    if(b.dataset.v===q.a)b.classList.add("ok");
+    else if(b===o)b.classList.add("bad");
+  });
+  $("#qfb").innerHTML='<div class="expl"><b>'+(good?"Correcto. ":"No era esa. ")+'</b>'+q.e+'</div><button class="btn qnext" id="qnext">'+(qi===QUIZ.length-1?"Ver resultado":"Siguiente pregunta")+'</button>';
+  $("#qnext").focus();
+});
+
+/* Tema claro / oscuro */
+(function(){
+  var root=document.documentElement,btn=$("#theme"),mq=window.matchMedia("(prefers-color-scheme: dark)");
+  function eff(){return root.getAttribute("data-theme")||(mq.matches?"dark":"light")}
+  function sync(){btn.textContent=eff()==="dark"?"☀️":"🌙"}
+  btn.addEventListener("click",function(){root.setAttribute("data-theme",eff()==="dark"?"light":"dark");sync()});
+  if(mq.addEventListener)mq.addEventListener("change",sync);
+  sync();
+})();
+
+buildFilter(); buildCards(); setFilter(null); buildMatrix(); buildTeam(); buildClose(); renderQ();
+})();
+</script>
+</body>
+</html>
